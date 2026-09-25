@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Team Matcher — Innovation Club{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="hero-kicker">Team Matcher</p>
+  <h1>Matched by skill fit, not by who applied first</h1>
+  <p class="hero-sub">
+    Every applicant is matched to an open project using a stable matching
+    algorithm — the same class of algorithm used for medical residency
+    placements. No pair of applicant and project would rather be with
+    each other than with their current match.
+  </p>
+</section>
+
+<section class="section section-narrow algo-note">
+  <div class="bracket-block">
+    <h3>How this works</h3>
+    <p>
+      Each applicant's skills are compared against each open project's
+      needed skills using <strong>Jaccard similarity</strong>
+      (overlap ÷ union). Applicants then "propose" to their
+      best-scoring project in order of preference; a project holds its
+      best-scoring applicants up to its open capacity and bumps a
+      weaker one if a better fit proposes later. This is the
+      <strong>Hospitals/Residents algorithm</strong>, a generalization
+      of Gale–Shapley (1962) to many-to-one matching. Runs in roughly
+      <code>O(n · p)</code> time for n applicants and p projects.
+    </p>
+  </div>
+</section>
+
+{% if not has_data %}
+<section class="section">
+  <p>No unmatched applicants or open project slots right now — check back once someone applies via the <a href="{{ url_for('join') }}">Join</a> page.</p>
+</section>
+{% else %}
+
+<section class="section">
+  <div class="section-head"><h2>Suggested matches</h2></div>
+
+  {% if suggestions %}
+  <div class="match-list">
+    {% for s in suggestions %}
+    <div class="match-row">
+      <div class="match-applicant">
+        <span class="match-name">{{ s.applicant['name'] }}</span>
+        <span class="project-meta">{{ s.applicant['skills'] }}</span>
+      </div>
+      <div class="match-arrow">
+        <span class="match-score">{{ s.score }}% fit</span>
+        →
+      </div>
+      <div class="match-project">
+        <span class="match-name">{{ s.project['title'] }}</span>
+        <span class="project-meta">needs: {{ s.project['skills'] }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <form method="POST" action="{{ url_for('confirm_match') }}" class="confirm-form">
+    <button type="submit" class="btn btn-primary">Confirm these placements</button>
+  </form>
+  {% else %}
+  <p>No matches found — no unmatched applicant currently overlaps in skills with an open project.</p>
+  {% endif %}
+</section>
+
+{% if unmatched %}
+<section class="section">
+  <div class="section-head"><h2>Not yet matched</h2></div>
+  <div class="event-list">
+    {% for a in unmatched %}
+    <div class="event-row">
+      <span class="event-date">{{ a['name'] }}</span>
+      <div>
+        <p class="project-meta">Skills: {{ a['skills'] or 'none listed' }} — no open project currently needs this combination.</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% endif %}
+{% endblock %}

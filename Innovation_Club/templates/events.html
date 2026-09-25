@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Events — Innovation Club{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="hero-kicker">Events</p>
+  <h1>Where the building happens</h1>
+  <p class="hero-sub">Drop into any Build Night — you don't need a team yet to come.</p>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>Upcoming</h2></div>
+  <div class="event-list">
+    {% for e in upcoming %}
+    <div class="event-row">
+      <span class="event-date">{{ e['event_date'] }}</span>
+      <div>
+        <h3>{{ e['title'] }}</h3>
+        <p>{{ e['description'] }}</p>
+        <p class="project-meta">{{ e['location'] }}</p>
+      </div>
+    </div>
+    {% else %}
+    <p>Nothing scheduled right now — check back soon.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% if past %}
+<section class="section">
+  <div class="section-head"><h2>Past</h2></div>
+  <div class="event-list event-list-past">
+    {% for e in past %}
+    <div class="event-row">
+      <span class="event-date">{{ e['event_date'] }}</span>
+      <div>
+        <h3>{{ e['title'] }}</h3>
+        <p>{{ e['description'] }}</p>
+        <p class="project-meta">{{ e['location'] }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

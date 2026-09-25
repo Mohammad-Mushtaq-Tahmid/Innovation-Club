@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Projects — Innovation Club{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="hero-kicker">Projects</p>
+  <h1>What we've been building</h1>
+  <p class="hero-sub">Every project here started as a rough idea pitched at Build Night.</p>
+</section>
+
+<section class="section">
+  <div class="project-grid">
+    {% for p in projects %}
+    <article class="project-card">
+      <div class="project-card-top">
+        <span class="tag">{{ p['tag'] }}</span>
+        <span class="stage stage-{{ p['stage'] | lower }}">{{ p['stage'] }}</span>
+      </div>
+      <h3>{{ p['title'] }}</h3>
+      <p>{{ p['summary'] }}</p>
+      <p class="project-meta">Team of {{ p['team_size'] }}{% if p['capacity'] > 0 %} · {{ p['capacity'] }} open slot{{ 's' if p['capacity'] != 1 else '' }}{% endif %}</p>
+      {% if p['skills'] %}
+      <p class="project-meta">Needs: {{ p['skills'] }}</p>
+      {% endif %}
+    </article>
+    {% else %}
+    <p>No projects yet — be the first to pitch one.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
