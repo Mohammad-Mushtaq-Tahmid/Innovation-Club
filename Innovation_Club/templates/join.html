@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Join — Innovation Club{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="hero-kicker">Join</p>
+  <h1>Tell us what you want to build</h1>
+  <p class="hero-sub">Applications are reviewed on a rolling basis — no deadline to worry about here.</p>
+</section>
+
+<section class="section section-narrow">
+  <form method="POST" class="join-form" novalidate>
+    <label>
+      Full name
+      <input type="text" name="name" value="{{ form.get('name', '') }}" required>
+    </label>
+
+    <label>
+      Student ID
+      <input type="text" name="student_id" value="{{ form.get('student_id', '') }}" required>
+    </label>
+
+    <label>
+      Email
+      <input type="email" name="email" value="{{ form.get('email', '') }}" required>
+    </label>
+
+    <label>
+      What do you want to help build?
+      <select name="role" required>
+        <option value="" disabled {% if not form.get('role') %}selected{% endif %}>Select one</option>
+        <option value="Product / Design" {% if form.get('role') == 'Product / Design' %}selected{% endif %}>Product / Design</option>
+        <option value="Engineering" {% if form.get('role') == 'Engineering' %}selected{% endif %}>Engineering</option>
+        <option value="Hardware" {% if form.get('role') == 'Hardware' %}selected{% endif %}>Hardware</option>
+        <option value="Business / Ops" {% if form.get('role') == 'Business / Ops' %}selected{% endif %}>Business / Ops</option>
+        <option value="Not sure yet" {% if form.get('role') == 'Not sure yet' %}selected{% endif %}>Not sure yet</option>
+      </select>
+    </label>
+
+    <fieldset class="skills-fieldset">
+      <legend>Your skills <span class="optional">(used to match you to a project)</span></legend>
+      <div class="skills-checkgrid">
+        {% for skill in skill_options %}
+        <label class="checkbox-label">
+          <input type="checkbox" name="skills" value="{{ skill }}"
+                 {% if skill in selected_skills %}checked{% endif %}>
+          {{ skill }}
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <label>
+      Portfolio or GitHub link <span class="optional">(optional)</span>
+      <input type="url" name="portfolio" value="{{ form.get('portfolio', '') }}" placeholder="https://">
+    </label>
+
+    <label>
+      Anything you want us to know <span class="optional">(optional)</span>
+      <textarea name="message" rows="4">{{ form.get('message', '') }}</textarea>
+    </label>
+
+    <button type="submit" class="btn btn-primary">Send application</button>
+  </form>
+</section>
+{% endblock %}

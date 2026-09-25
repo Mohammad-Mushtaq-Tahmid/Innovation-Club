@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Innovation Club — Build something this term{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="hero-kicker">Nanjing Tech · student-run</p>
+    <h1 class="hero-title">Build something<br>worth shipping.</h1>
+    <p class="hero-sub">
+      The Innovation Club is where students turn a rough idea into a working
+      prototype — apps, hardware, tools, small businesses — with a team,
+      a deadline, and a demo day at the end of it.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('join') }}" class="btn btn-primary">Join the club</a>
+      <a href="{{ url_for('projects') }}" class="btn btn-ghost">See what we've built</a>
+    </div>
+
+    <div class="stat-row" data-animate-stats>
+      <div class="stat">
+        <span class="stat-num" data-count="{{ stats.builders }}">0</span>
+        <span class="stat-label">builders</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="{{ stats.active_projects }}">0</span>
+        <span class="stat-label">in progress</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="{{ stats.shipped }}">0</span>
+        <span class="stat-label">shipped</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>What we do</h2>
+  </div>
+  <div class="split-block">
+    <div class="bracket-block">
+      <h3>Pick a team, not just a club</h3>
+      <p>You join a small team of 2–5 building one real thing over the
+      term — no general meetings, no attendance sheets.</p>
+    </div>
+    <div class="bracket-block">
+      <h3>Ship something visible</h3>
+      <p>Every term ends at Demo Day. Whatever your team makes, it gets
+      shown to real people — not graded, just seen.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Currently building</h2>
+    <a href="{{ url_for('projects') }}" class="section-link">All projects →</a>
+  </div>
+  <div class="project-grid">
+    {% for p in projects %}
+    <article class="project-card">
+      <div class="project-card-top">
+        <span class="tag">{{ p['tag'] }}</span>
+        <span class="stage stage-{{ p['stage'] | lower }}">{{ p['stage'] }}</span>
+      </div>
+      <h3>{{ p['title'] }}</h3>
+      <p>{{ p['summary'] }}</p>
+      <p class="project-meta">Team of {{ p['team_size'] }}{% if p['capacity'] > 0 %} · {{ p['capacity'] }} open slot{{ 's' if p['capacity'] != 1 else '' }}{% endif %}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Coming up</h2>
+    <a href="{{ url_for('events') }}" class="section-link">All events →</a>
+  </div>
+  <div class="event-list">
+    {% for e in events %}
+    <div class="event-row">
+      <span class="event-date">{{ e['event_date'] }}</span>
+      <div>
+        <h3>{{ e['title'] }}</h3>
+        <p>{{ e['description'] }}</p>
+        <p class="project-meta">{{ e['location'] }}</p>
+      </div>
+    </div>
+    {% else %}
+    <p>No upcoming events yet — check back soon.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="cta-band">
+  <h2>Have an idea? Or want one?</h2>
+  <p>Either way, there's a seat for you.</p>
+  <a href="{{ url_for('join') }}" class="btn btn-primary">Join the club</a>
+</section>
+
+{% endblock %}
